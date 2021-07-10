@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pastel Escrow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@3.0.0/dist/web3.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="./index.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid d-flex flex-column vh-100 text-light text-center">
+        <!-- navbar -->
+        <div class="row bg-nav-color">
+            <nav class="navbar navbar-expand-sm navbar-dark p-1">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Pastel Escrow</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/index.html">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/faq.html">Faq</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- contract container -->
+        <div class="row mb-auto d-flex justify-content-center text-dark">
+            <div class="col-md-6 d-flex flex-column text-center mt-3" id="contract-container" style="background-color: whitesmoke;">
+                <p class='my-auto text-break'>Contract Address</p>
+                <code class='my-auto text-break'>0x9B0fbe80Dd30E34a17107764820b80Cd0aFB08fE</code>
+            </div>
+        </div>
+        
+        <!-- navigation tabs -->
+        <div class="row my-3 d-flex justify-content-center">
+            <nav class="py-md-2 col-md-6 nav nav-pills flex-column flex-sm-row px-lg-5 px-md-3 rounded-3" style="padding: 0; background-color: whitesmoke;">
+                <a class="flex-sm-fill text-sm-center nav-link active" href="#" id="place-bid-button" onclick="switch_nav_tab('place-bid')">Place Bid</a>
+                <a class="flex-sm-fill text-sm-center nav-link" href="#" id="claim-bid-button" onclick="switch_nav_tab('claim-bid')">Claim Bid</a>
+                <a class="flex-sm-fill text-sm-center nav-link" href="#" id="remove-bid-button" onclick="switch_nav_tab('remove-bid')">Remove Bid</a>
+            </nav>
+        </div>
+
+        <!-- place-bid -->
+        <div class="row mb-auto d-flex justify-content-center text-dark" id="place-bid-container">
+            <nav class="col-md-6 d-flex flex-column text-start" style="background-color: whitesmoke;">
+                <!-- text -->
+                <h5 class="py-2 my-auto">Nft Id : </h5>
+                <input class="form-control form-control-lg rounded-3 my-1" placeholder="Nft Id" type="number" id="nft-id" value="">
+                <h5 class="py-2 my-auto">Nft Price : </h5>
+                <input class="form-control form-control-lg rounded-3 my-1" placeholder="Nft Price (in FTM)" type="number" id="nft-price" value="">
+                <h5 class="pt-2 my-auto">Buyer Address : </h5>
+                <input class="form-control form-control-lg rounded-3 my-1" placeholder="Buyer Address" type="text" id="buyer-address" value="">
+                
+                <!-- approve button -->
+                <div class="d-flex flex-column text-center">
+                    <button type="button" class="my-2 btn btn-primary btn-lg" onclick="place_bid()" id="place-bid-btn">Place Bid</button>
+                </div>
+
+            </nav>
+        </div>
+
+        <!-- claim-bid -->
+        <div class="row mb-auto d-flex flex-column justify-content-center text-dark d-none" id="claim-bid-container">
+            
+            <div class="col-md-6 mx-auto my-3 d-flex flex-column text-start" style="background-color: whitesmoke;">
+                <h5 class="py-2 my-auto">Bid Number : </h5>
+                <input class="form-control form-control-lg rounded-3 my-1" placeholder="Bid Number" type="number" id="bid-number" value="">
+                                
+                <!-- search button -->
+                <div class="d-flex flex-column text-center">
+                    <button type="button" class="my-2 btn btn-primary btn-lg" id="search-bid-btn" onclick="fetchbid()">Search Bid</button>
+                </div>
+            </div>
+ 
+            <!-- show-bid-details and claim button -->
+            <div class="col-md-6 mx-auto my-3 d-flex flex-column text-start" style="background-color: whitesmoke;" id="show-bid-container">
+                <div class="d-flex flex-wrap text-center">
+                    <h5 class="text-break my-auto py-2">Bid Number : &nbsp;</h5>
+                    <code class="text-break my-auto py-2" id="show-bid-bid-no">.</code>
+                </div>
+                <div class="d-flex flex-wrap text-center">
+                    <h5 class="text-break my-auto py-2">NFT Id : &nbsp;</h5>
+                    <code class="text-break my-auto py-2" id="show-bid-nft-id">.</code>
+                </div>
+                <div class="d-flex flex-wrap text-center">
+                    <h5 class="text-break my-auto py-2">Seller Address : &nbsp;</h5>
+                    <code class="text-break my-auto py-2" id="show-bid-seller">.</code>
+                </div>
+                <div class="d-flex flex-wrap text-center">
+                    <h5 class="text-break my-auto py-2">Buyer Address : &nbsp;</h5>
+                    <code class="text-break my-auto py-2" id="show-bid-buyer">.</code>
+                </div>
+                <div class="d-flex flex-wrap text-center">
+                    <h5 class="text-break my-auto py-2">Price : &nbsp;</h5>
+                    <code class="text-break my-auto py-2" id="show-bid-bid-price">.</code>
+                </div>
+                
+                <!-- approve button -->
+                <div class="d-flex flex-column text-center">
+                    <button type="button" class="my-2 btn btn-primary btn-lg" onclick="claimbid()">Claim Bid</button>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- remove-bid -->
+        <div class="row mb-auto d-flex justify-content-center text-dark d-none" id="remove-bid-container">
+            <nav class="col-md-6 d-flex flex-column text-start">
+
+                <h5 class="py-2 my-auto">Bid Number : </h5>
+                <input class="form-control form-control-lg rounded-3 my-1" placeholder="Bid Number" type="number" id="remove-bid-number" value="">
+
+                <!-- approve button -->
+                <div class="d-flex flex-column text-center">
+                    <button type="button" class="my-2 btn btn-primary btn-lg" onclick="removebid()">Remove Bid</button>
+                </div>
+            </nav>
+        </div>
+
+        <!-- bid number container -->
+        <div class="row mb-auto d-flex justify-content-center text-dark">
+            <div class="col-md-6 d-flex flex-column text-start my-5 d-none" id="bid-no-container" style="background-color: whitesmoke;">
+                <h4 class="text-center">Bid Number</h4>
+                <h1 class="text-center" id="bid-no">.</h1>
+                <p><b>Note : </b> Copy and Send this bid number to the Buyer</p>
+            </div>
+        </div>
+
+        <!-- txn logs container -->
+        <div class="row mb-auto d-flex justify-content-center text-dark">
+            <div class="col-md-6 d-flex flex-column text-start my-5" id="logs-container" style="background-color: whitesmoke;">
+            </div>
+        </div>
+        
+
+        <!-- footer -->
+        <div class="row bg-nav-color">
+            <div class="container my-2">
+                <a class="text-light" href="#" hidden><i class="bi bi-twitter mx-3"></i></a>
+                <a class="text-light" href="#" hidden><i class="bi bi-facebook mx-3"></i></a>
+                <a class="text-light" href="#" hidden><i class="bi bi-github mx-3"></i></a>
+                <a class="text-light" href="https://t.me/mayank160920" ><i class="bi bi-telegram mx-3"></i></a>
+            </div>
+            <div class="text-center py-1" hidden>Open Source Escrow Platform For Pastel Holders</div>
+        </div>
+
+    </div>
+
+    <style>
+        .bg-nav-color {
+            background-color: #084298;
+        }
+
+        .bg_offers_container {
+            background-color: #0d2952;
+        }
+
+        .hower:hover {
+            /* border: 0.5px solid black; */
+            transform: scale(1.01);
+        }
+    </style>
+</body>
+
+</html>

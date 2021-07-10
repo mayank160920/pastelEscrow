@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pastel Escrow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@3.0.0/dist/web3.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="./index.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid d-flex flex-column vh-100 text-light text-center">
+        <!-- navbar -->
+        <div class="row bg-nav-color">
+            <nav class="navbar navbar-expand-sm navbar-dark p-1">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Pastel Escrow</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link " aria-current="page" href="/index.html">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/faq.html">Faq</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- faq container -->
+        <div class="row mb-auto d-flex justify-content-center text-dark">
+
+            <div class="col-md-6 d-flex flex-column text-start my-5 py-3" id="faq-container" style="background-color: whitesmoke;">
+                <h5>* What is this project..?</h5>
+                <p class="my-auto">This is a side project which I developed to safely escrow nfts (currently pastel ticket only).</p>
+                <br>
+                <h5>* How does it work ..?</h5>
+                <p class="my-auto">You can escrow an nft trade in 2 simple steps : </p>
+                <h6 class="my-1">-> Step 1 : Place a Bid (Seller)</h6>
+                <p class="my-auto">When you place a bid, 2 transactions are automatically sent sequentially:</p>
+                <p class="my-auto">Txn 1 : To get approval to transfer nft (nft contract)</p>
+                <p class="my-auto">Txn 2 : To place bid (escrow contract)</p>
+                <p class="my-auto">You will get a <b>bid number</b> after placing the bid successfully.</p>
+                <p class="my-auto">Send the bid number to the buyer.</p>
+                <h6 class="my-1">-> Step 2 : Claim a Bid (Buyer)</h6>
+                <p class="my-auto">Enter the bid number which you can get from the seller.</p>
+                <p class="my-auto">When you place a bid, 1 transaction is sent :</p>
+                <p class="my-auto">Txn 1 : To claim bid (escrow contract)</p>
+                <p class="my-auto">After claim is confirmed, the nft is send to the buyer and ftm is sent to the seller in the same transaction.</p>
+                <br>
+                <h5>* Do I need to pay any fees..?</h5>
+                <p class="my-auto">You just need to pay the transaction gas fees. Nothing more.</p>
+                <br>
+                <h5>* Do I need to send my nft to smart contract...?</h5>
+                <p class="my-auto">Nope, you don't need to send the nft to smart contract.</p>
+                <p class="my-auto">You just need to approve the smart contract to transfer nft on your behalf.</p>
+                <br>
+                <h5>* Do you lock the nft..? Will I be able to transfer my nft after placing a bid..?</h5>
+                <p class="my-auto">Nope, we don't lock your nft. It stays in your wallet.</p>
+                <p class="my-auto">You can also transfer it normally after placing the bid.</p>
+                <br>
+                <h5>* Is it safe to use the contract..? Can I lose money ..?</h5>
+                <p class="my-auto">Yup, it's safe to use the contract.</p>
+                <p class="my-auto">The contract neither stores funds or nfts untill the bid is claimed.</p>
+                <p class="my-auto">Also, if anything goes wrong during the nft/ftm transfer then the whole transaction is reverted.</p>
+                <br>
+                <h5>* Can I trust this contract..?</h5>
+                <p class="my-auto">It's just a fun side project.</p>
+                <p class="my-auto">I tried to make the contract simple and error free.</p>
+                <p class="my-auto">Also, there are no owner functions so even I can't control the contract.</p>
+                <p class="my-auto">You can check the contract code on ftmscan.</p>
+                <br>
+                <h5>* What is the contract address..?</h5>
+                <code class="my-auto">0x9B0fbe80Dd30E34a17107764820b80Cd0aFB08fE</code>
+
+            </div>
+        </div>
+        
+
+        <!-- footer -->
+        <div class="row bg-nav-color">
+            <div class="container my-2">
+                <a class="text-light" href="#" hidden><i class="bi bi-twitter mx-3"></i></a>
+                <a class="text-light" href="#" hidden><i class="bi bi-facebook mx-3"></i></a>
+                <a class="text-light" href="#" hidden><i class="bi bi-github mx-3"></i></a>
+                <a class="text-light" href="https://t.me/mayank160920" ><i class="bi bi-telegram mx-3"></i></a>
+            </div>
+            <div class="text-center py-1" hidden>Open Source Escrow Platform For Pastel Holders</div>
+        </div>
+
+    </div>
+
+    <style>
+        .bg-nav-color {
+            background-color: #084298;
+        }
+
+        .bg_offers_container {
+            background-color: #0d2952;
+        }
+
+        .hower:hover {
+            /* border: 0.5px solid black; */
+            transform: scale(1.01);
+        }
+    </style>
+</body>
+
+</html>
