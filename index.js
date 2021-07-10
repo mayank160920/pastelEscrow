@@ -223,6 +223,7 @@ const place_bid = async () => {
         if (receipt.status == true) {
             console.log("Approval Done :)")
             $('#logs-container')[0].innerHTML += "<p class='my-auto text-break'>* Transaction 1 : Nft Approval Txn Confirmed</p>"
+            $('#logs-container')[0].innerHTML += `<p class='my-auto text-break'>* Transaction 1 : ${receipt.transactionHash}</p>`
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
@@ -289,8 +290,10 @@ const _place_bid = async () => {
     
     txn.once('receipt', function (receipt) {
         if (receipt.status == true) {
+            console.log(receipt);
             Swal.fire(`Success ! Your Bid Number is ${_key}`)
             $('#logs-container')[0].innerHTML += "<p class='my-auto text-break'>* Transaction 2 : Bid Placement Txn Confirmed</p>"
+            $('#logs-container')[0].innerHTML += `<p class='my-auto text-break'>* Transaction 2 : ${receipt.transactionHash}</p>`
             $('#logs-container')[0].innerHTML += `<p class='my-auto text-break'>* Bid Number : ${_key}</p>`
             $('#bid-no')[0].innerHTML = _key
             switch_nav_tab('bid-no');
@@ -383,6 +386,7 @@ const claimbid = async () => {
     txn.once('receipt', function (receipt) {
         if (receipt.status == true) {
             $('#logs-container')[0].innerHTML += "<p class='my-auto text-break'>* Transaction Confirmed :)</p>"
+            $('#logs-container')[0].innerHTML += `<p class='my-auto text-break'>* Transaction Hash : ${receipt.transactionHash}</p>`
             console.log("Bid Claimed :)")
             Swal.fire({
                 position: 'top-end',
@@ -452,6 +456,7 @@ const removebid = async () => {
     txn.once('receipt', function (receipt) {
         if (receipt.status == true) {
             $('#logs-container')[0].innerHTML += "<p class='my-auto text-break'>* Transaction Confirmed :)</p>"
+            $('#logs-container')[0].innerHTML += `<p class='my-auto text-break'>* Transaction Hash : ${receipt.transactionHash}</p>`
             console.log("Bid Removed :)")
             Swal.fire({
                 position: 'top-end',
