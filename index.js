@@ -261,9 +261,7 @@ const _place_bid = async () => {
     // places the bid
     $('#logs-container')[0].innerHTML += "<p class='my-auto text-break'>* Transaction 2 : Bid Placement Initiated</p>"
 
-    if (!web3) {
-        await loadweb3();
-    }
+    await loadweb3();
     contract = new web3.eth.Contract(contract_abi, contract_address);
 
     _key = Math.floor(Math.random() * 100000000000);
@@ -320,9 +318,8 @@ const _place_bid = async () => {
 
 // claim and search bid
 const fetchbid = async () => {
-    if (!web3) {
-        await loadweb3();
-    }
+    await loadweb3();
+
     _key = document.getElementById('bid-number').value
     contract = new web3.eth.Contract(contract_abi, contract_address);
     txn = await contract.methods.ledger(_key).call();
@@ -350,9 +347,7 @@ const claimbid = async () => {
     $('#logs-container')[0].innerHTML += "<p class='my-auto text-break text-center'><b>Transaction Logs : </b></p>"
     $('#logs-container')[0].innerHTML += "<p class='my-auto text-break'>* Total 1 Transaction Pending</p>"
 
-    if (!web3) {
-        await loadweb3();
-    }
+    await loadweb3();
 
     _key = $('#show-bid-bid-no')[0].innerHTML   // from the current bid which is shown
     $('#logs-container')[0].innerHTML += `<p class='my-auto text-break'>* Attempting to Claim Bid : ${_key}</p>`
@@ -426,9 +421,7 @@ const removebid = async () => {
     $('#logs-container')[0].innerHTML += "<p class='my-auto text-break text-center'><b>Transaction Logs : </b></p>"
     $('#logs-container')[0].innerHTML += "<p class='my-auto text-break'>* Total 1 Transaction Pending</p>"
 
-    if (!web3) {
-        await loadweb3();
-    }
+    await loadweb3();
 
     _key = document.getElementById('remove-bid-number').value   // from the input field
     $('#logs-container')[0].innerHTML += `<p class='my-auto text-break'>* Attempting to Remove Bid : ${_key}</p>`
