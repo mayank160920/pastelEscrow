@@ -166,6 +166,12 @@ const place_bid = async () => {
     nft_id = document.getElementById('nft-id').value
     nft_contract = new web3.eth.Contract(nft_abi, nft_address);
 
+    // handle empty price
+    if (document.getElementById('nft-price').value == "") {
+        $('#logs-container')[0].innerHTML += "<p class='my-auto text-break'>* Error : Incorrect Price</p>"
+        Swal.fire("Enter a Valid Price")
+    }
+
     // check buyers address
     try {
         web3.utils.toChecksumAddress(document.getElementById('buyer-address').value);
