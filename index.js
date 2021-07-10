@@ -170,6 +170,7 @@ const place_bid = async () => {
     if (document.getElementById('nft-price').value == "") {
         $('#logs-container')[0].innerHTML += "<p class='my-auto text-break'>* Error : Incorrect Price</p>"
         Swal.fire("Enter a Valid Price")
+        return
     }
 
     // check buyers address
